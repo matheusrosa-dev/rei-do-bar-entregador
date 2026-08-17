@@ -91,10 +91,10 @@ api.interceptors.response.use(
     }
 
     // 5) Nunca tentamos refresh quando o proprio endpoint de refresh falha.
-    //    Isso evita recursao infinita no interceptor.
+    //    Isso evita recursao infinita no interceptor. Apenas propagamos o erro:
+    //    quem trata e o catch da request original, que ja distingue 401 (sessao
+    //    expirada) de qualquer outra falha do refresh.
     if (originalRequest.url?.includes("/auth/refresh")) {
-      await onSessionExpired();
-
       return Promise.reject(error);
     }
 
