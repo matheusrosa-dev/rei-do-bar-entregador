@@ -10,7 +10,7 @@ type Props = {
 };
 
 export const DeliverOrderButton = ({ order }: Props) => {
-  const { getOrders, deliverOrder } = useOrdersService();
+  const { getOrders, deliverOrder, getDeliveredCount } = useOrdersService();
   const queryClient = useQueryClient();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,6 +24,7 @@ export const DeliverOrderButton = ({ order }: Props) => {
       setIsModalOpen(false);
 
       queryClient.invalidateQueries({ queryKey: [getOrders.key] });
+      queryClient.invalidateQueries({ queryKey: [getDeliveredCount.key] });
     },
   });
 

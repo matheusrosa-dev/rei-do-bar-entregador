@@ -1,6 +1,8 @@
 import { api } from "../api";
 import type {
   DeliverOrder,
+  GetDeliveredCount,
+  GetDeliveredCountResponse,
   GetOrders,
   GetOrdersResponse,
   UseOrdersService,
@@ -19,11 +21,23 @@ export const useOrdersService: UseOrdersService = () => {
     await api.patch<void>(`${baseUrl}/${orderId}/deliver`);
   };
 
+  const getDeliveredCount: GetDeliveredCount = async () => {
+    const response = await api.get<GetDeliveredCountResponse>(
+      `${baseUrl}/delivered-count`,
+    );
+
+    return response.data.data;
+  };
+
   return {
     getOrders: {
       fn: getOrders,
       key: "get-orders",
     },
     deliverOrder,
+    getDeliveredCount: {
+      fn: getDeliveredCount,
+      key: "get-delivered-count",
+    },
   };
 };

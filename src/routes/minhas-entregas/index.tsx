@@ -8,7 +8,7 @@ import { useOrdersService } from "@services";
 import { useSessionStore } from "@shared/stores/session";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { OrderCard } from "./-partials";
+import { DeliveredCount, OrderCard } from "./-partials";
 
 export const Route = createFileRoute("/minhas-entregas/")({
   beforeLoad: () => {
@@ -22,7 +22,7 @@ export const Route = createFileRoute("/minhas-entregas/")({
 const TITLE = "Minhas entregas";
 
 function MinhasEntregas() {
-  const { getOrders } = useOrdersService();
+  const { getOrders, getDeliveredCount } = useOrdersService();
 
   const { data: orders, ...ordersQuery } = useQuery({
     queryKey: [getOrders.key],
@@ -30,10 +30,23 @@ function MinhasEntregas() {
     retry: false,
   });
 
+  const { data: deliveredCount, ...deliveredCountQuery } = useQuery({
+    queryKey: [getDeliveredCount.key],
+    queryFn: getDeliveredCount.fn,
+    retry: false,
+  });
+
+  const onRefetch = () => {
+    ordersQuery.refetch();
+    deliveredCountQuery.refetch();
+  };
+
   const headerContent = () => (
     <RefetchButton
-      onRefetch={ordersQuery.refetch}
-      isRefetching={ordersQuery.isRefetching}
+      onRefetch={onRefetch}
+      isRefetching={
+        ordersQuery.isRefetching || deliveredCountQuery.isRefetching
+      }
     />
   );
 
@@ -47,6 +60,10 @@ function MinhasEntregas() {
 
   return (
     <PageWrapper title={TITLE} headerContent={headerContent}>
+      {deliveredCount !== undefined && (
+        <DeliveredCount count={deliveredCount.deliveredCount} />
+      )}
+
       {orders?.length ? (
         <div className="flex flex-col gap-4">
           {orders.map((order) => (
