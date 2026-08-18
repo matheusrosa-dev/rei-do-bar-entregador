@@ -7,6 +7,7 @@ export interface IOrderItem {
 }
 
 export interface IOrder {
+  id: string;
   orderNumber: number;
   address: string;
   total: number;
