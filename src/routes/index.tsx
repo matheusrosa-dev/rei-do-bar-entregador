@@ -9,7 +9,7 @@ import { defaultValues, resolver, type Form } from "./-login-form";
 export const Route = createFileRoute("/")({
   beforeLoad: () => {
     if (useSessionStore.getState().session) {
-      throw redirect({ to: "/teste", replace: true });
+      throw redirect({ to: "/minhas-entregas", replace: true });
     }
   },
   component: Login,
@@ -32,7 +32,7 @@ function Login() {
     onSuccess: (session) => {
       createSession(session);
 
-      navigate({ to: "/teste", replace: true });
+      navigate({ to: "/minhas-entregas", replace: true });
     },
   });
 

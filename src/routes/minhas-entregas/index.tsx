@@ -1,5 +1,4 @@
 import {
-  Button,
   PageError,
   PageLoading,
   PageWrapper,
@@ -11,21 +10,18 @@ import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { OrderCard } from "./-partials";
 
-export const Route = createFileRoute("/teste/")({
+export const Route = createFileRoute("/minhas-entregas/")({
   beforeLoad: () => {
     if (!useSessionStore.getState().session) {
       throw redirect({ to: "/", replace: true });
     }
   },
-  component: Test,
+  component: MinhasEntregas,
 });
 
 const TITLE = "Minhas entregas";
 
-function Test() {
-  const navigate = Route.useNavigate();
-  const destroySession = useSessionStore((state) => state.destroySession);
-
+function MinhasEntregas() {
   const { getOrders } = useOrdersService();
 
   const { data: orders, ...ordersQuery } = useQuery({
@@ -34,23 +30,11 @@ function Test() {
     retry: false,
   });
 
-  const onLogout = () => {
-    destroySession();
-
-    navigate({ to: "/", replace: true });
-  };
-
   const headerContent = () => (
-    <div className="flex items-center gap-1">
-      <RefetchButton
-        onRefetch={ordersQuery.refetch}
-        isRefetching={ordersQuery.isRefetching}
-      />
-
-      <Button variant="secondary" onClick={onLogout}>
-        Sair
-      </Button>
-    </div>
+    <RefetchButton
+      onRefetch={ordersQuery.refetch}
+      isRefetching={ordersQuery.isRefetching}
+    />
   );
 
   if (ordersQuery.isLoading) {
