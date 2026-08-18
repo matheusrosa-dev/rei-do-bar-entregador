@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
-import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { Navigate, RouterProvider, createRouter } from "@tanstack/react-router";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
@@ -8,7 +8,15 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 import { useSessionStore } from "@shared/stores/session";
 
-const router = createRouter({ routeTree });
+// So existem as rotas `/` e `/minhas-entregas`: qualquer outra cai no notFound
+// e volta para a pagina permitida da sessao atual.
+const NotFound = () => {
+  const session = useSessionStore((state) => state.session);
+
+  return <Navigate to={session ? "/minhas-entregas" : "/"} replace />;
+};
+
+const router = createRouter({ routeTree, defaultNotFoundComponent: NotFound });
 
 const queryClient = new QueryClient();
 
