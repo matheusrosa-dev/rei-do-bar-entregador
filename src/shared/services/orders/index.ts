@@ -1,5 +1,10 @@
 import { api } from "../api";
-import type { GetOrders, GetOrdersResponse, UseOrdersService } from "./types";
+import type {
+  DeliverOrder,
+  GetOrders,
+  GetOrdersResponse,
+  UseOrdersService,
+} from "./types";
 
 export const useOrdersService: UseOrdersService = () => {
   const baseUrl = "/orders";
@@ -10,10 +15,15 @@ export const useOrdersService: UseOrdersService = () => {
     return response.data.data;
   };
 
+  const deliverOrder: DeliverOrder = async (orderId) => {
+    await api.patch<void>(`${baseUrl}/${orderId}/deliver`);
+  };
+
   return {
     getOrders: {
       fn: getOrders,
       key: "get-orders",
     },
+    deliverOrder,
   };
 };

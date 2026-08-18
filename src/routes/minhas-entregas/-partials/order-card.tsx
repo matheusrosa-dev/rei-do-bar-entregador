@@ -2,6 +2,7 @@ import { ImagePreview, StatusBadge, Wrapper } from "@components";
 import { formatPrice } from "@shared/helpers/number";
 import { PAYMENT_TYPE_LABEL } from "@shared/helpers/order";
 import type { IOrder } from "@shared/models";
+import { DeliverOrderButton } from "./deliver-order-button";
 
 type Props = {
   order: IOrder;
@@ -51,6 +52,8 @@ export const OrderCard = ({ order }: Props) => {
 
         <span className="text-white font-bold">{formatPrice(order.total)}</span>
       </div>
+
+      <DeliverOrderButton order={order} />
     </Wrapper>
   );
 };

@@ -50,7 +50,7 @@ function MinhasEntregas() {
       {orders?.length ? (
         <div className="flex flex-col gap-4">
           {orders.map((order) => (
-            <OrderCard key={order.orderNumber} order={order} />
+            <OrderCard key={order.id} order={order} />
           ))}
         </div>
       ) : (
