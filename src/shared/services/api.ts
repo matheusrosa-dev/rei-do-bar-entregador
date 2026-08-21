@@ -31,7 +31,6 @@ api.interceptors.request.use(async (config) => {
 });
 
 let sessionExpiredToastShowing = false;
-export const isSessionExpiredToastShowing = () => sessionExpiredToastShowing;
 
 const refreshSession = async () => {
   const { data } = await api.post<ISession>("/auth/refresh");

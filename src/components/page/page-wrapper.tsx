@@ -1,17 +1,13 @@
-import { MdOutlineArrowBackIosNew } from "react-icons/md";
-
 export type Props = {
   title: string;
   children: React.ReactNode;
   headerContent?: () => React.ReactNode;
-  goBack?: boolean;
 };
 
 export const PageWrapper = ({
   title,
   children,
   headerContent: HeaderContent,
-  goBack,
 }: Props) => {
   return (
     <div className="h-full flex flex-col">
@@ -25,19 +21,7 @@ export const PageWrapper = ({
         {HeaderContent && <HeaderContent />}
       </header>
 
-      <div className="p-5 overflow-auto flex-1 flex flex-col">
-        {goBack && (
-          <button
-            onClick={() => window.history.back()}
-            type="button"
-            className="text-white flex items-center gap-2 font-medium cursor-pointer mb-5 w-fit pr-2"
-          >
-            <MdOutlineArrowBackIosNew />
-            Voltar
-          </button>
-        )}
-        {children}
-      </div>
+      <div className="p-5 overflow-auto flex-1 flex flex-col">{children}</div>
     </div>
   );
 };
